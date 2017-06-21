@@ -109,6 +109,17 @@ defmodule Bitstamp.Api do
     post_to_api "unconfirmed_btc"
   end
 
+  def transfer_to_main(opts) do
+    amount = Keyword.fetch!(opts, :amount)
+    currency = Keyword.fetch!(opts, :currency)
+    case Keyword.fetch(opts, :subaccount) do
+      {:ok, subaccount} ->
+        post_to_api "transfer_to_main", %{amount: amount, subaccount: subaccount, currency: currency}
+      _ ->
+        post_to_api "transfer_to_main", %{amount: amount, currency: currency}
+    end
+  end
+  
   def ripple_withdrawal(opts) do
     amount = Keyword.fetch!(opts, :amount)
     address = Keyword.fetch!(opts, :address)
